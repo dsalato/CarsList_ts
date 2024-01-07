@@ -1,12 +1,24 @@
-import React, {FC} from 'react';
-import {useAppSelector} from "../redux/store";
+import React, {FC, useEffect} from 'react';
+import {RootState, useAppDispatch, useAppSelector} from "../redux/store";
+import {fetchCars} from "../redux/slices/carsSlice";
 
 const Home: FC = () => {
-    const {value} = useAppSelector((state) => state.cars)
+    const dispatch = useAppDispatch();
+    const {cars} = useAppSelector((state: RootState) => state.cars);
+
+    const getCars = async () => {
+        dispatch(fetchCars());
+    }
+
+    useEffect(() => {
+        getCars();
+    }, []);
 
     return (
         <div>
-            {value} машины
+            {cars?.map((elem) => (
+                <p key={elem.city_mpg}>{elem.model}</p>
+            ))}
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import React, {FC, useEffect} from 'react';
 import {RootState, useAppDispatch, useAppSelector} from "../redux/store";
 import {fetchCars} from "../redux/slices/carsSlice";
+import Cars from "../components/Cars/Cars";
 
 const Home: FC = () => {
     const dispatch = useAppDispatch();
@@ -15,11 +16,10 @@ const Home: FC = () => {
     }, []);
 
     return (
-        <div>
-            {cars?.map((elem) => (
-                <p key={elem.city_mpg}>{elem.model}</p>
-            ))}
-        </div>
+        <>
+
+            <Cars cars={cars}/>
+        </>
     );
 };
 

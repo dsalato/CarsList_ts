@@ -13,7 +13,7 @@ interface carsState {
     cars: Car[]
 }
 
-type Car = {
+export type Car = {
     "city_mpg": number,
     "class": string,
     "combination_mpg": number,

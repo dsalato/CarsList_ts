@@ -9,27 +9,39 @@ export const fetchCars = createAsyncThunk(
     }
 )
 
+export const postAddCar = createAsyncThunk(
+    'cars/postAddCar',
+    async (values: Car) => {
+        return fetch(`https://65994c30a20d3dc41cef8603.mockapi.io/cars`, {
+            method: 'POST',
+            headers: { Accept:'application/json', 'Content-Type':'application/json'},
+            body: JSON.stringify({
+                classCar: values.classCar,
+                drive: values.drive,
+                make: values.make,
+                model: values.model,
+                year: values.year
+            })
+        }).then((res) => res.json());
+
+    }
+)
+
+
 interface carsState {
-    cars: Car[]
+    cars: Car[],
 }
 
 export type Car = {
-    "city_mpg": number,
-    "class": string,
-    "combination_mpg": number,
-    "cylinders": number,
-    "displacement": number,
+    "classCar": string,
     "drive": string,
-    "fuel_type": string,
-    "highway_mpg": number,
     "make": string,
     "model": string,
-    "transmission": string,
-    "year": number
+    "year": string
 }
 
 const initialState: carsState = {
-    cars: []
+    cars: [],
 }
 
 const carsSlice = createSlice({
@@ -38,7 +50,11 @@ const carsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchCars.fulfilled, (state, action) => {
-            state.cars = action.payload
+            state.cars = action.payload;
+        })
+
+        builder.addCase(postAddCar.fulfilled, (state, action) => {
+            state.cars = [];
         })
     }
 })

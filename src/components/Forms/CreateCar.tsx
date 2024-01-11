@@ -1,38 +1,56 @@
 import React, {useState} from 'react';
+import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
+import {postAddCar} from "../../redux/slices/carsSlice";
+import {useNavigate} from "react-router-dom";
 
 const CreateCar = () => {
-    const [formValue, setFormValue] = useState('')
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate()
+    const [value, setValue] = useState({make: '', model: '', classCar: '', year: '', drive: ''});
 
-    type LoginFormFields = {
-        name: string
+    const handleInput: React.ChangeEventHandler<HTMLInputElement> &  React.ChangeEventHandler<HTMLSelectElement>  = (e) => {
+        setValue({...value, [e.target.name]: e.target.value});
     }
 
-    type FormField = {
-        name: HTMLInputElement
-    }
-
-    const onSubmit = (formFields: LoginFormFields) => {
-        setFormValue(formFields.name);
-    };
-
-    const handleSubmit: React.FormEventHandler<HTMLFormElement & FormField> = (event) => {
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        const form = event.currentTarget;
-        const { name } = form;
-
-        onSubmit({name: name.value});
+        dispatch(postAddCar(value));
+        console.log(value);
+        // setTimeout(()=>{
+        //     navigate('/');
+        // },2000)
     }
 
     return (
         <>
             <form onSubmit={handleSubmit}>
                 <label>
-                    Имя:
-                    <input type="text" name="name" />
+                    Марка:
+                    <input type="text" name="make" value={value.make} onChange={handleInput}/>
                 </label>
-                <input type="submit" value="Отправить" />
+                <label>
+                    Модель:
+                    <input type="text" name="model" value={value.model} onChange={handleInput}/>
+                </label>
+                <label>
+                    Класс:
+                    <input type="text" name="classCar" value={value.classCar} onChange={handleInput}/>
+                </label>
+                <label>
+                    Год:
+                    <input type="text" name="year" value={value.year} onChange={handleInput}/>
+                </label>
+                <label>
+                    Привод:
+                    <select name="drive" value={value.drive} onChange={handleInput} >
+                        <option>-- Выберите привод --</option>
+                        <option value="awd">Полный привод</option>
+                        <option value="rwd">Задний</option>
+                        <option value="fwd">Передний</option>
+                    </select>
+                </label>
+                <input type="submit" value="Отправить"/>
             </form>
-            <p>{formValue}</p>
         </>
     );
 };

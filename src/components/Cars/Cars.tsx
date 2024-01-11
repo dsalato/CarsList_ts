@@ -13,7 +13,7 @@ const Cars: FC<CarsProps> = ({cars}) => {
             <h1 className='text-center text-xl my-2'>Машины</h1>
             <div className={styles.cars}>
                 {cars?.map((elem) => (
-                    <CarView key={elem.city_mpg} elem={elem}/>
+                    <CarView elem={elem}/>
                 ))}
             </div>
         </>
